@@ -1,2 +1,2 @@
-export const url = import.meta.env.SUPABASE_PROJECT_URL;
-export const api = import.meta.env.SUPABASE_API_KEY;
+export const url = import.meta.env.VITE_SUPABASE_PROJECT_URL;
+export const api = import.meta.env.VITE_SUPABASE_API_KEY;

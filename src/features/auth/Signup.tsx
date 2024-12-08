@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { type SignupLoginFormInput } from "../../utils/types";
 import { supabase } from "../../utils/supabase";
 
-const Login = () => {
+const Signup = () => {
   const {
     register,
     handleSubmit,
@@ -40,11 +40,13 @@ const Login = () => {
           <div className="p-4 md:p-7">
             <div className="text-center mb-4">
               <h1 className="black text-2xl font-bold text-gray-800">
-                サインイン
+                サインアップ
               </h1>
-              <p className="mt-2 text-sm text-gray-600">
-                まだアカウントをお持ちではないですか？
-              </p>
+              <div>
+                <p className="mt-2 text-sm text-gray-600">
+                  すでにアカウントをお持ちですか？
+                </p>
+              </div>
             </div>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="grid gap-y-5 mx-5">
@@ -99,7 +101,7 @@ const Login = () => {
                   type="submit"
                   className="block bg-blue-600 w-full py-3 px-4 mt-2 border border-transparent rounded-md text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700"
                 >
-                  サインイン
+                  サインアップ
                 </button>
               </div>
             </form>
@@ -110,4 +112,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
