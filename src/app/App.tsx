@@ -1,10 +1,9 @@
 import React from "react";
-import Login from "../features/auth/Login";
 import "../assets/styles/App.css";
-import Signup from "../features/auth/Signup";
+import Router from "./Router";
 
 function App() {
-  return <Signup />;
+  return <Router />;
 }
 
 export default App;

@@ -2,8 +2,11 @@ import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { type SignupLoginFormInput } from "../../utils/types";
 import { supabase } from "../../utils/supabase";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -25,6 +28,10 @@ const Login = () => {
       if (error) {
         throw new Error(error.message);
       }
+
+      if (authData.session) {
+        navigate("/");
+      }
     } catch (err) {
       if (err instanceof Error) {
         throw err;
@@ -42,9 +49,18 @@ const Login = () => {
               <h1 className="black text-2xl font-bold text-gray-800">
                 サインイン
               </h1>
-              <p className="mt-2 text-sm text-gray-600">
-                まだアカウントをお持ちではないですか？
-              </p>
+              <div>
+                <p className="my-2 text-sm text-gray-600">
+                  まだアカウントをお持ちではないですか？
+                </p>
+                <p className="text-blue-600 text-xs hover:underline">
+                  <span className="inline-block hover:underline">
+                    <Link to={"/signup"}>
+                      こちらからアカウントを作成してください。
+                    </Link>
+                  </span>
+                </p>
+              </div>
             </div>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="grid gap-y-5 mx-5">

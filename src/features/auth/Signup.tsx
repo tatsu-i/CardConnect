@@ -2,8 +2,10 @@ import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { type SignupLoginFormInput } from "../../utils/types";
 import { supabase } from "../../utils/supabase";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -25,6 +27,10 @@ const Signup = () => {
       if (error) {
         throw new Error(error.message);
       }
+
+      if (authData.session) {
+        navigate("/");
+      }
     } catch (err) {
       if (err instanceof Error) {
         throw err;
@@ -43,8 +49,14 @@ const Signup = () => {
                 サインアップ
               </h1>
               <div>
-                <p className="mt-2 text-sm text-gray-600">
+                <p className="my-2 text-sm text-gray-600">
                   すでにアカウントをお持ちですか？
+                </p>
+
+                <p className="text-blue-600 text-xs hover:underline">
+                  <span className="inline-block hover:underline">
+                    <Link to={"/login"}>こちらからログインしてください。</Link>
+                  </span>
                 </p>
               </div>
             </div>
