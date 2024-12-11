@@ -26,14 +26,14 @@ const Login = () => {
         password,
       });
 
-      console.log(authData);
+      //   console.log(authData);
 
       if (error) {
         setErrorMessage(error.message);
       }
 
       if (authData.session) {
-        navigate("/");
+        navigate("/profilecard");
       }
     } catch (err) {
       if (err instanceof Error) {

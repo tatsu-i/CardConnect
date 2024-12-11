@@ -33,7 +33,7 @@ const Signup = () => {
       }
 
       if (authData.session) {
-        navigate("/");
+        navigate("/profilecard");
       }
     } catch (err) {
       if (err instanceof Error) {
