@@ -5,11 +5,13 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import HeaderContent from "./HeaderContent";
 
 const items = [
   {
@@ -42,6 +44,9 @@ const items = [
 const AppSidebar = () => {
   return (
     <Sidebar>
+      <SidebarHeader>
+        <HeaderContent />
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
