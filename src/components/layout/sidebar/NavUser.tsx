@@ -13,8 +13,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import useAuth from "@/hooks/useAuth";
 import { ChevronsUpDown, LogOut, User } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const NavUser = () => {
   return (
@@ -31,9 +33,7 @@ const NavUser = () => {
                   src={"../../../assets/images/usericon_notset.png"}
                   alt=""
                 />
-                <AvatarFallback className="rounded-lg">
-                  User Icon
-                </AvatarFallback>
+                <AvatarFallback className="rounded-lg">Icon</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">User Name</span>
@@ -54,7 +54,7 @@ const NavUser = () => {
                     src={"../../../assets/images/usericon_notset.png"}
                     alt=""
                   />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">Icon</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">User Name</span>
@@ -64,10 +64,12 @@ const NavUser = () => {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <User />
-                Account
-              </DropdownMenuItem>
+              <Link to={"/account"}>
+                <DropdownMenuItem>
+                  <User />
+                  Account
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>

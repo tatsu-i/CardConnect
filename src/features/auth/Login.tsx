@@ -21,7 +21,7 @@ const Login = () => {
     try {
       setIsLoading(true);
       const { email, password } = data;
-      const { data: authData, error } = await supabase.auth.signUp({
+      const { data: authData, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
