@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import Compressor from "compressorjs";
-import { UserAccount } from "@/utils/types";
+import imageCompression from "browser-image-compression";
+import { UserAccount, UserInfo } from "@/utils/types";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { supabase } from "@/utils/supabase";
@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input";
 
 const Account = () => {
   const [errorMessage, setErrorMessage] = useState("");
+  const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(false);
   const { user } = useAuth();
   const {
     register,
@@ -18,27 +20,44 @@ const Account = () => {
   } = useForm<UserAccount>();
 
   const onUpload = async (data: UserAccount) => {
-    const file = data.icon[0];
-    new Compressor(file, {
-      quality: 0.6,
-      success: async (compressedFile) => {
-        const fileExt = (compressedFile as File).name.split(".").pop();
-        const fileName = `${user!.id}.${fileExt}`;
-        const filePath = `private/${fileName}`;
-        const { error: uploadError } = await supabase.storage
-          .from("icons")
-          .update(filePath, compressedFile, {
-            upsert: true,
-          });
+    setLoading(true);
 
-        if (uploadError) {
-          setErrorMessage(`アップロードに失敗しました：${uploadError.message}`);
-        }
-      },
-      error: (error: Error) => {
-        setErrorMessage(`画像の圧縮に失敗しました：${error.message}`);
-      },
-    });
+    //アイコンアップロード
+    let filePath = "";
+    if (data.icon && data.icon.length > 0) {
+      const file = data.icon[0] as File;
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 800,
+        useWebWorker: true,
+      };
+
+      const compressedFile = await imageCompression(file, options);
+
+      const fileExt = compressedFile.name.split(".").pop();
+      const fileName = `${user!.id}.${fileExt}`;
+      filePath = `private/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("icons")
+        .update(filePath, compressedFile, {
+          upsert: true,
+        });
+
+      if (uploadError) {
+        setErrorMessage(`アップロードに失敗しました：${uploadError.message}`);
+      }
+    }
+
+    //アップデート
+    const updates: UserInfo = {
+      id: user!.id,
+      username: username,
+      avatar_url: filePath,
+      updated_at: new Date().toISOString(),
+    };
+
+    const { error } = await supabase.from("profiles").upsert(updates);
   };
 
   return (
@@ -63,7 +82,17 @@ const Account = () => {
             <label htmlFor="name" className="block text-lg mb-1">
               ユーザーネーム
             </label>
-            <Input type="name" placeholder="User Name" />
+            <Input
+              {...register("username", {
+                minLength: {
+                  value: 3,
+                  message: "ユーザーネームは3文字以上である必要があります。",
+                },
+              })}
+              type="name"
+              placeholder="User Name"
+              onChange={(e) => setUsername(e.target.value)}
+            />
           </div>
           <div className="mb-8">
             <label htmlFor="icon" className="block text-lg">

@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -19,7 +19,7 @@ const Login = () => {
 
   const onSubmit: SubmitHandler<SignupLoginFormInput> = async (data) => {
     try {
-      setIsLoading(true);
+      setLoading(true);
       const { email, password } = data;
       const { data: authData, error } = await supabase.auth.signInWithPassword({
         email,
@@ -40,7 +40,7 @@ const Login = () => {
         setErrorMessage(err.message);
       }
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -120,7 +120,7 @@ const Login = () => {
                   type="submit"
                   className="block bg-blue-600 w-full py-3 px-4 mt-2 border border-transparent rounded-md text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700"
                 >
-                  {isLoading ? "サインイン中..." : "サインイン"}
+                  {loading ? "サインイン中..." : "サインイン"}
                 </button>
               </div>
             </form>
