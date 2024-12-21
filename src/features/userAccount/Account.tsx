@@ -7,14 +7,19 @@ import { supabase } from "@/utils/supabase";
 import useAuth from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import useProfile from "@/hooks/useProfile";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserAccount } from "./userAccountSlice";
+import { RootState } from "@/store/store";
 
 const Account = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [inputUsername, setInputUsername] = useState("");
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const { username, iconUrl } = useSelector(
+    (state: RootState) => state.userAccount
+  );
   const { user } = useAuth();
-  const { username, iconUrl, getProfile } = useProfile();
   const {
     register,
     handleSubmit,
@@ -71,7 +76,7 @@ const Account = () => {
       if (error) {
         setErrorMessage(`データの更新に失敗しました：${error.message}`);
       } else {
-        await getProfile();
+        dispatch(fetchUserAccount(user!.id));
       }
     } else {
       setErrorMessage("値が入力されていません。");

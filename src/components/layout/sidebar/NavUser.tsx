@@ -13,13 +13,26 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import useProfile from "@/hooks/useProfile";
+import { fetchUserAccount } from "@/features/userAccount/userAccountSlice";
+import useAuth from "@/hooks/useAuth";
+import { RootState, AppDispatch } from "@/store/store";
 import { ChevronsUpDown, LogOut, User } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const NavUser = () => {
-  const { iconUrl, username } = useProfile();
+  const dispatch = useDispatch<AppDispatch>();
+  const { username, iconUrl } = useSelector(
+    (state: RootState) => state.userAccount
+  );
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      dispatch(fetchUserAccount(user.id));
+    }
+  }, [user, dispatch]);
 
   return (
     <SidebarMenu>

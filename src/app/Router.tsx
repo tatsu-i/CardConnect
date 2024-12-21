@@ -4,7 +4,7 @@ import Layout from "../components/layout/Layout";
 import Login from "../features/auth/Login";
 import Signup from "../features/auth/Signup";
 import ProfileCard from "../features/profile/ProfileCard";
-import Account from "@/features/auth/Account";
+import Account from "@/features/userAccount/Account";
 import useAuth from "@/hooks/useAuth";
 
 const Router = () => {
