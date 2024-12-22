@@ -73,7 +73,7 @@ const NavUser = () => {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <Link to={"/account"}>
+              <Link to={"/editaccount"}>
                 <DropdownMenuItem>
                   <User />
                   Account

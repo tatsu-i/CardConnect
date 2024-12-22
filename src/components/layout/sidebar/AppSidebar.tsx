@@ -10,20 +10,22 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
 import HeaderContent from "./HeaderContent";
 import NavUser from "./NavUser";
+import { Link } from "react-router-dom";
 
 const items = [
   {
-    title: "Home",
-    url: "#",
+    title: "プロフィールカード",
+    url: "/profilecard",
     icon: Home,
   },
   {
-    title: "Inbox",
-    url: "#",
+    title: "プロフィールカードを編集",
+    url: "/editprofilecard",
     icon: Inbox,
   },
   {
@@ -57,10 +59,10 @@ const AppSidebar = () => {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link to={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

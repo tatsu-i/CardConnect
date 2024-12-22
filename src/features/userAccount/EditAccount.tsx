@@ -9,9 +9,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserAccount } from "./userAccountSlice";
-import { RootState } from "@/store/store";
+import { AppDispatch, RootState } from "@/store/store";
 
-const Account = () => {
+const EditAccount = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [inputUsername, setInputUsername] = useState("");
   const [loading, setLoading] = useState(false);
@@ -141,4 +141,4 @@ const Account = () => {
   );
 };
 
-export default Account;
+export default EditAccount;
