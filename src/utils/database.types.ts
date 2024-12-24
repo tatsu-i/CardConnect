@@ -9,30 +9,110 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      ProfileCard: {
+        Row: {
+          birth_data: string | null
+          description: string | null
+          hobby: string | null
+          image_url: string | null
+          job: string | null
+          name: string | null
+          prefecture: string | null
+          skill: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          birth_data?: string | null
+          description?: string | null
+          hobby?: string | null
+          image_url?: string | null
+          job?: string | null
+          name?: string | null
+          prefecture?: string | null
+          skill?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          birth_data?: string | null
+          description?: string | null
+          hobby?: string | null
+          image_url?: string | null
+          job?: string | null
+          name?: string | null
+          prefecture?: string | null
+          skill?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ProfileCard_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ProfileCardLists: {
+        Row: {
+          img_url: string | null
+          "PRIMARY KEY": string
+          saved_at: string | null
+          saved_profile_id: string
+          user_id: string
+        }
+        Insert: {
+          img_url?: string | null
+          "PRIMARY KEY": string
+          saved_at?: string | null
+          saved_profile_id: string
+          user_id: string
+        }
+        Update: {
+          img_url?: string | null
+          "PRIMARY KEY"?: string
+          saved_at?: string | null
+          saved_profile_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ProfileCardLists_saved_profile_id_fkey"
+            columns: ["saved_profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ProfileCardLists_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
-          full_name: string | null
           id: string
           updated_at: string | null
           username: string | null
-          website: string | null
         }
         Insert: {
           avatar_url?: string | null
-          full_name?: string | null
           id: string
           updated_at?: string | null
           username?: string | null
-          website?: string | null
         }
         Update: {
           avatar_url?: string | null
-          full_name?: string | null
           id?: string
           updated_at?: string | null
           username?: string | null
-          website?: string | null
         }
         Relationships: []
       }

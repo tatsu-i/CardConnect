@@ -48,7 +48,7 @@ const EditAccount = () => {
 
       const { error: uploadError } = await supabase.storage
         .from("icons")
-        .update(filePath, compressedFile, {
+        .upload(filePath, compressedFile, {
           upsert: true,
         });
 

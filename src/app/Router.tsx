@@ -2,11 +2,11 @@ import React from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Login from "../features/auth/Login";
 import Signup from "../features/auth/Signup";
-import ProfileCard from "../features/profile/ProfileCard";
+import ProfileCard from "../features/profileCard/ProfileCard";
 import EditAccount from "@/features/userAccount/EditAccount";
 import useAuth from "@/hooks/useAuth";
 import DashBoard from "./DashBoard";
-import EditProfileCard from "@/features/profile/EditProfileCard";
+import EditProfileCard from "@/features/profileCard/EditProfileCard";
 
 const Router = () => {
   const { user } = useAuth();

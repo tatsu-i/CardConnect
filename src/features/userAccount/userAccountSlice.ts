@@ -1,13 +1,6 @@
 import { supabase } from "@/utils/supabase";
+import { UserAccountState } from "@/utils/types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
-interface UserAccountState {
-  username: string;
-  avatar_url: string;
-  iconUrl: string;
-  loading: boolean;
-  error: string | null;
-}
 
 const initialState: UserAccountState = {
   username: "",

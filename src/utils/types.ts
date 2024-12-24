@@ -14,3 +14,28 @@ export interface UserInfo {
   avatar_url?: string;
   updated_at: string;
 }
+
+export interface UserAccountState {
+  username: string;
+  avatar_url: string;
+  iconUrl: string;
+  loading: boolean;
+  error: string | null;
+}
+
+export interface ProfileCard {
+  user_id: string;
+  name?: string;
+  birth_date?: string;
+  prefecture?: string;
+  job?: string;
+  description?: string;
+  hobby?: string;
+  skill?: string;
+  image_url?: string;
+  updated_at: string;
+}
+
+export interface ProfileCardState extends ProfileCard {
+  loading?: boolean;
+}
