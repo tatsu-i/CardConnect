@@ -11,7 +11,7 @@ export type Database = {
     Tables: {
       ProfileCard: {
         Row: {
-          birth_data: string | null
+          birth_date: string | null
           description: string | null
           hobby: string | null
           image_url: string | null
@@ -23,7 +23,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
-          birth_data?: string | null
+          birth_date?: string | null
           description?: string | null
           hobby?: string | null
           image_url?: string | null
@@ -35,7 +35,7 @@ export type Database = {
           user_id: string
         }
         Update: {
-          birth_data?: string | null
+          birth_date?: string | null
           description?: string | null
           hobby?: string | null
           image_url?: string | null

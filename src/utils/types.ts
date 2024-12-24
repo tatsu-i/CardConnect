@@ -37,5 +37,6 @@ export interface ProfileCard {
 }
 
 export interface ProfileCardState extends ProfileCard {
-  loading?: boolean;
+  loading: boolean;
+  error: string | null;
 }

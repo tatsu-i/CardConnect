@@ -74,6 +74,10 @@ const EditProfileCard = () => {
       updated_at: new Date().toISOString(),
     };
 
+    if (fileName) {
+      updates.image_url = fileName;
+    }
+
     const name = formData.get("name");
     if (name) updates.name = name.toString();
 
