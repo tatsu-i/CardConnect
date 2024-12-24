@@ -1,7 +1,6 @@
 import { supabase } from "@/utils/supabase";
 import { ProfileCardState } from "@/utils/types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { error } from "console";
 
 const initialState: ProfileCardState = {
   name: "",

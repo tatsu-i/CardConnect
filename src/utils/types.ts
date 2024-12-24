@@ -36,7 +36,15 @@ export interface ProfileCard {
   updated_at: string;
 }
 
-export interface ProfileCardState extends ProfileCard {
+export interface ProfileCardState {
+  name?: string;
+  birth_date?: string;
+  prefecture?: string;
+  job?: string;
+  description?: string;
+  hobby?: string;
+  skill?: string;
+  image_url?: string;
   loading: boolean;
   error: string | null;
 }
