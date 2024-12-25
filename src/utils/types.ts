@@ -32,6 +32,7 @@ export interface ProfileCard {
   description?: string;
   hobby?: string;
   skill?: string;
+  instagram?: string;
   image_url?: string;
   updated_at: string;
 }
@@ -44,6 +45,7 @@ export interface ProfileCardState {
   description?: string;
   hobby?: string;
   skill?: string;
+  instagram?: string;
   image_url?: string;
   loading: boolean;
   error: string | null;

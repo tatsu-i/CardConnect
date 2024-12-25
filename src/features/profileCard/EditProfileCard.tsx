@@ -93,6 +93,9 @@ const EditProfileCard = () => {
     const skill = formData.get("skill");
     if (skill) updates.skill = skill.toString();
 
+    const instagram = formData.get("instagram");
+    if (instagram) updates.instagram = instagram.toString();
+
     if (Object.keys(updates).length > 1) {
       const { error } = await supabase.from("ProfileCard").upsert(updates);
       if (error) {
@@ -199,6 +202,12 @@ const EditProfileCard = () => {
               スキル
             </label>
             <Input name="skill" placeholder="Skill" />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="instagram" className="block text-md mb-1">
+              Instagram
+            </label>
+            <Input name="instagram" placeholder="Instagram" />
           </div>
           <div className="mb-4">
             <label htmlFor="image" className="block text-md mb-1">

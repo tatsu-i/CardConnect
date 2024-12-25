@@ -15,6 +15,7 @@ export type Database = {
           description: string | null
           hobby: string | null
           image_url: string | null
+          instagram: string | null
           job: string | null
           name: string | null
           prefecture: string | null
@@ -27,6 +28,7 @@ export type Database = {
           description?: string | null
           hobby?: string | null
           image_url?: string | null
+          instagram?: string | null
           job?: string | null
           name?: string | null
           prefecture?: string | null
@@ -39,6 +41,7 @@ export type Database = {
           description?: string | null
           hobby?: string | null
           image_url?: string | null
+          instagram?: string | null
           job?: string | null
           name?: string | null
           prefecture?: string | null

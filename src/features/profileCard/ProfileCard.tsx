@@ -77,7 +77,7 @@ const ProfileCard = () => {
 
           <div className="flex items-center text-gray-700 dark:text-gray-200">
             <Instagram />
-            <h1 className="px-2 text-sm">patterson@example.com</h1>
+            <h1 className="px-2 text-sm">{profileCard.instagram}</h1>
           </div>
         </div>
       </div>

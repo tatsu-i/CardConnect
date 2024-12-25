@@ -10,6 +10,7 @@ const initialState: ProfileCardState = {
   description: "",
   hobby: "",
   skill: "",
+  instagram: "",
   image_url: undefined,
   loading: false,
   error: null,
@@ -21,7 +22,7 @@ export const fetchProfileCard = createAsyncThunk(
     const { data, error } = await supabase
       .from("ProfileCard")
       .select(
-        `user_id, name, birth_date, prefecture, job, description, hobby, skill, image_url`
+        `user_id, name, birth_date, prefecture, job, description, hobby, skill, instagram, image_url`
       )
       .eq("user_id", userId)
       .single();
@@ -68,6 +69,7 @@ const profileCardSlice = createSlice({
         state.description = action.payload.description || "Your Description";
         state.hobby = action.payload.hobby || "Your hobby";
         state.skill = action.payload.skill || "Your Skill";
+        state.instagram = action.payload.instagram || "Your Instagram";
         state.image_url = action.payload.image_url;
       })
       .addCase(fetchProfileCard.rejected, (state, action) => {
