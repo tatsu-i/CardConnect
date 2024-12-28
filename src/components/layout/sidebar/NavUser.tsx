@@ -12,6 +12,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { fetchUserAccount } from "@/features/userAccount/userAccountSlice";
 import useAuth from "@/hooks/useAuth";
@@ -27,6 +28,7 @@ const NavUser = () => {
     (state: RootState) => state.userAccount
   );
   const { user } = useAuth();
+  const { openMobile, setOpenMobile } = useSidebar();
 
   useEffect(() => {
     if (user) {
@@ -49,7 +51,9 @@ const NavUser = () => {
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{username}</span>
-                <span className="truncate text-xs">user email</span>
+                <span className="truncate text-xs">
+                  {user?.email ?? "user email"}
+                </span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -67,24 +71,36 @@ const NavUser = () => {
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{username}</span>
-                  <span className="truncate text-xs">user email</span>
+                  <span className="truncate text-xs">
+                    {user?.email ?? "user email"}
+                  </span>
                 </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <Link to={"/editaccount"}>
-                <DropdownMenuItem>
+              <Link
+                to={"/editaccount"}
+                onClick={() => setOpenMobile(!openMobile)}
+              >
+                <DropdownMenuItem className="cursor-pointer hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
                   <User />
                   Account
                 </DropdownMenuItem>
               </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut />
-              Log out
-            </DropdownMenuItem>
+            <DropdownMenuGroup>
+              <Link
+                to={"/editaccount"}
+                onClick={() => setOpenMobile(!openMobile)}
+              >
+                <DropdownMenuItem className="cursor-pointer hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
+                  <LogOut />
+                  Log out
+                </DropdownMenuItem>
+              </Link>
+            </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

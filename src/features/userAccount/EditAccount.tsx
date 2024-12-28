@@ -96,7 +96,9 @@ const EditAccount = () => {
           </Avatar>
           <div className="grid flex-1 text-left text-base leading-tight">
             <span className="truncate font-medium">{username}</span>
-            <span className="truncate text-sm">user email</span>
+            <span className="truncate text-sm">
+              {user?.email ?? "user email"}
+            </span>
           </div>
         </div>
         <form onSubmit={handleSubmit(onUpload)}>

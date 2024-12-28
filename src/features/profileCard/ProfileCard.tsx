@@ -16,7 +16,7 @@ const ProfileCard = () => {
   const profileCard = useSelector((state: RootState) => state.profileCard);
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useAuth();
-  const [flipped, setFlipped] = useState(false);
+  const [flipped, setFlipped] = useState(true);
 
   useEffect(() => {
     if (user) {

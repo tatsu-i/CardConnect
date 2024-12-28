@@ -12,7 +12,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import { Home, Inbox } from "lucide-react";
 import HeaderContent from "./HeaderContent";
 import NavUser from "./NavUser";
 import { Link } from "react-router-dom";
@@ -28,24 +28,11 @@ const items = [
     url: "/editprofilecard",
     icon: Inbox,
   },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
 ];
 
 const AppSidebar = () => {
+  const { openMobile, setOpenMobile } = useSidebar();
+
   return (
     <Sidebar>
       <SidebarHeader>
@@ -59,7 +46,10 @@ const AppSidebar = () => {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link to={item.url}>
+                    <Link
+                      to={item.url}
+                      onClick={() => setOpenMobile(!openMobile)}
+                    >
                       <item.icon />
                       <span>{item.title}</span>
                     </Link>
