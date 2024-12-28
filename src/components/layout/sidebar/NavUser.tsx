@@ -17,6 +17,7 @@ import {
 import { fetchUserAccount } from "@/features/userAccount/userAccountSlice";
 import useAuth from "@/hooks/useAuth";
 import { RootState, AppDispatch } from "@/store/store";
+import { supabase } from "@/utils/supabase";
 import { ChevronsUpDown, LogOut, User } from "lucide-react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,6 +30,14 @@ const NavUser = () => {
   );
   const { user } = useAuth();
   const { openMobile, setOpenMobile } = useSidebar();
+
+  const handleSignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      throw error;
+    }
+  };
 
   useEffect(() => {
     if (user) {
@@ -91,10 +100,7 @@ const NavUser = () => {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <Link
-                to={"/editaccount"}
-                onClick={() => setOpenMobile(!openMobile)}
-              >
+              <Link to={"/editaccount"} onClick={handleSignOut}>
                 <DropdownMenuItem className="cursor-pointer hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
                   <LogOut />
                   Log out
