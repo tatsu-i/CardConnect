@@ -6,6 +6,7 @@ export default {
     extend: {
       rotate: {
         "y-180": "180deg",
+        "y-0": "0deg",
       },
       backgroundVisibility: {
         hidden: "hidden",

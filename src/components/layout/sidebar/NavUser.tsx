@@ -31,7 +31,7 @@ const NavUser = () => {
   const { user } = useAuth();
   const { openMobile, setOpenMobile } = useSidebar();
 
-  const handleSignOut = async () => {
+  const handleLogOut = async () => {
     const { error } = await supabase.auth.signOut();
 
     if (error) {
@@ -100,7 +100,7 @@ const NavUser = () => {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <Link to={"/editaccount"} onClick={handleSignOut}>
+              <Link to={"/editaccount"} onClick={handleLogOut}>
                 <DropdownMenuItem className="cursor-pointer hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
                   <LogOut />
                   Log out
