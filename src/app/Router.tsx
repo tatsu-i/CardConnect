@@ -7,6 +7,7 @@ import EditAccount from "@/features/userAccount/EditAccount";
 import useAuth from "@/hooks/useAuth";
 import DashBoard from "./DashBoard";
 import EditProfileCard from "@/features/profileCard/EditProfileCard";
+import QRReader from "@/features/profileCard/QRReader";
 
 const Router = () => {
   const { user } = useAuth();
@@ -21,6 +22,7 @@ const Router = () => {
             <Route path="/profilecard" element={<ProfileCard />} />
             <Route path="/editprofilecard" element={<EditProfileCard />} />
             <Route path="/editaccount" element={<EditAccount />} />
+            <Route path="/qrreader" element={<QRReader />} />
             <Route path="/" element={<Navigate to="/profilecard" replace />} />
           </Route>
         ) : (
