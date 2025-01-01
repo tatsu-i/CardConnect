@@ -20,7 +20,7 @@ import { prefectures } from "@/utils/prefectures";
 import { CalendarIcon } from "lucide-react";
 import React, { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
-import { ProfileCard } from "@/utils/types";
+import { ProfileCardUpdate } from "@/utils/types";
 import useAuth from "@/hooks/useAuth";
 import { supabase } from "@/utils/supabase";
 import imageCompression from "browser-image-compression";
@@ -67,7 +67,7 @@ const EditProfileCard = () => {
     }
 
     //イメージ以外のupdate;
-    const updates: ProfileCard = {
+    const updates: ProfileCardUpdate = {
       user_id: user!.id,
       birth_date: date?.toISOString(),
       prefecture,

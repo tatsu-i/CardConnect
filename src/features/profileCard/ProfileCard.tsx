@@ -13,18 +13,62 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProfileCard } from "./profileCardSlice";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
 import { QRCodeSVG } from "qrcode.react";
-import { useNavigate } from "react-router-dom";
+import { supabase } from "@/utils/supabase";
 
 const ProfileCard = () => {
   const profileCard = useSelector((state: RootState) => state.profileCard);
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
   const { user } = useAuth();
   const [flipped, setFlipped] = useState(false);
+  const [token, setToken] = useState("");
 
   useEffect(() => {
+    let isMounted = true;
+
     if (user) {
       dispatch(fetchProfileCard(user.id));
+
+      const generateToken = async () => {
+        try {
+          const { data: existing_token } = await supabase
+            .from("qr_tokens")
+            .select("token")
+            .eq("user_id", user.id)
+            .gt("expires_at", new Date().toISOString())
+            .maybeSingle();
+
+          if (!isMounted) return;
+
+          if (existing_token) {
+            setToken(existing_token.token);
+            console.log(`既存のトークンを使用：${existing_token.token}`);
+            return;
+          }
+
+          const token = crypto.randomUUID();
+          const { error } = await supabase.from("qr_tokens").insert({
+            token,
+            user_id: user.id,
+            created_at: new Date().toISOString(),
+            expires_at: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
+          });
+
+          if (!isMounted) return;
+
+          if (error) throw error;
+          setToken(token);
+          console.log(`生成されたトークン：${token}`);
+        } catch (err) {
+          if (!isMounted) return;
+          console.error("トークン生成エラー:", err);
+        }
+      };
+
+      generateToken();
+
+      return () => {
+        isMounted = false;
+      };
     }
   }, [user, dispatch]);
 
@@ -111,7 +155,7 @@ const ProfileCard = () => {
           }`}
         >
           <div className="flex justify-center items-center h-full p-10">
-            <QRCodeSVG value={user.id || ""} size={224} />
+            <QRCodeSVG value={token} size={224} />
           </div>
         </div>
       </div>

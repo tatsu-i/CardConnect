@@ -61,21 +61,18 @@ export type Database = {
       }
       ProfileCardLists: {
         Row: {
-          img_url: string | null
           "PRIMARY KEY": string
           saved_at: string | null
           saved_profile_id: string
           user_id: string
         }
         Insert: {
-          img_url?: string | null
           "PRIMARY KEY": string
           saved_at?: string | null
           saved_profile_id: string
           user_id: string
         }
         Update: {
-          img_url?: string | null
           "PRIMARY KEY"?: string
           saved_at?: string | null
           saved_profile_id?: string
@@ -93,8 +90,8 @@ export type Database = {
             foreignKeyName: "ProfileCardLists_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            referencedRelation: "ProfileCard"
+            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -119,12 +116,36 @@ export type Database = {
         }
         Relationships: []
       }
+      qr_tokens: {
+        Row: {
+          created_at: string | null
+          expires_at: string | null
+          token: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          expires_at?: string | null
+          token: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          expires_at?: string | null
+          token?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      delete_expired_tokens: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
