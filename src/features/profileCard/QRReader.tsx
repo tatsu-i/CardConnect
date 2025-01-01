@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { IDetectedBarcode, Scanner } from "@yudiel/react-qr-scanner";
 import { supabase } from "@/utils/supabase";
 import { ScannedProfileCard } from "@/utils/types";
+import ProfileCardViewer from "./ProfileCardViewer";
 
 const QRReader = () => {
   const [isScanning, setIsScanning] = useState(true);
@@ -46,7 +47,18 @@ const QRReader = () => {
         if (error) throw error;
 
         if (profileCard_data) {
-          setScannedProfileCard(profileCard_data);
+          const { data: imageData, error } = await supabase.storage
+            .from("profilecard_imgs")
+            .download(`private/${profileCard_data.image_url}`);
+
+          if (error) throw error;
+
+          const url = URL.createObjectURL(imageData);
+          const scannedProfileCardData = {
+            ...profileCard_data,
+            image_url: url,
+          };
+          setScannedProfileCard(scannedProfileCardData);
           console.log(profileCard_data);
         }
       }
@@ -94,20 +106,24 @@ const QRReader = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="w-[300px]">
-        <Scanner
-          onScan={handleScan}
-          formats={["qr_code"]}
-          allowMultiple={false} // これを指定すると連続でスキャンできる
-          // スキャン時の UI をカスタマイズ
-          components={{
-            tracker: customTracker, // コード検出時の視覚的なフィードバックをカスタマイズ
-            audio: false, // スキャン時に音を鳴らす (default: true)
-            onOff: true, // スキャンのオンオフを切り替えるボタンを表示する (default: false)
-            finder: false, // ファインダーを表示する (default: true)
-          }}
-        />
-      </div>
+      {!scannedProfileCard ? (
+        <div className="w-[300px]">
+          <Scanner
+            onScan={handleScan}
+            formats={["qr_code"]}
+            allowMultiple={false} // これを指定すると連続でスキャンできる
+            // スキャン時の UI をカスタマイズ
+            components={{
+              tracker: customTracker, // コード検出時の視覚的なフィードバックをカスタマイズ
+              audio: false, // スキャン時に音を鳴らす (default: true)
+              onOff: true, // スキャンのオンオフを切り替えるボタンを表示する (default: false)
+              finder: false, // ファインダーを表示する (default: true)
+            }}
+          />
+        </div>
+      ) : (
+        <ProfileCardViewer profileData={scannedProfileCard} />
+      )}
     </div>
   );
 };
