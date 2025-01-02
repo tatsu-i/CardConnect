@@ -61,55 +61,43 @@ export type Database = {
       }
       ProfileCardLists: {
         Row: {
-          "PRIMARY KEY": string
+          id: string
           saved_at: string | null
           saved_profile_id: string
           user_id: string
         }
         Insert: {
-          "PRIMARY KEY": string
+          id?: string
           saved_at?: string | null
           saved_profile_id: string
           user_id: string
         }
         Update: {
-          "PRIMARY KEY"?: string
+          id?: string
           saved_at?: string | null
           saved_profile_id?: string
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "ProfileCardLists_saved_profile_id_fkey"
-            columns: ["saved_profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "ProfileCardLists_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "ProfileCard"
-            referencedColumns: ["user_id"]
-          },
-        ]
+        Relationships: []
       }
       profiles: {
         Row: {
           avatar_url: string | null
+          full_name: string | null
           id: string
           updated_at: string | null
           username: string | null
         }
         Insert: {
           avatar_url?: string | null
+          full_name?: string | null
           id: string
           updated_at?: string | null
           username?: string | null
         }
         Update: {
           avatar_url?: string | null
+          full_name?: string | null
           id?: string
           updated_at?: string | null
           username?: string | null

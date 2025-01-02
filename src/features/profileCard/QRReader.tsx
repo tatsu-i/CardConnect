@@ -3,12 +3,16 @@ import { IDetectedBarcode, Scanner } from "@yudiel/react-qr-scanner";
 import { supabase } from "@/utils/supabase";
 import { ScannedProfileCard } from "@/utils/types";
 import ProfileCardViewer from "./ProfileCardViewer";
+import { Button } from "@/components/ui/button";
+import useAuth from "@/hooks/useAuth";
 
 const QRReader = () => {
   const [isScanning, setIsScanning] = useState(true);
   const lastScannedRef = useRef("");
   const [scannedProfileCard, setScannedProfileCard] =
     useState<ScannedProfileCard | null>(null);
+  const { user } = useAuth();
+
   const handleScan = async (results: IDetectedBarcode[]) => {
     if (!isScanning || results.length === 0) return;
 
@@ -72,6 +76,36 @@ const QRReader = () => {
     }
   };
 
+  const handleSavaProfileCard = async () => {
+    const saved_user_id = scannedProfileCard!.user_id;
+    const { error: select_error, data } = await supabase
+      .from("ProfileCardLists")
+      .select("saved_profile_id")
+      .eq("user_id", user!.id)
+      .eq("saved_profile_id", saved_user_id)
+      .maybeSingle();
+
+    if (select_error) {
+      console.error("チェックエラー:", select_error);
+      return;
+    }
+
+    if (data?.saved_profile_id) {
+      console.log("既に保存済みのユーザーです。");
+      return;
+    }
+
+    const { error: upsert_error } = await supabase
+      .from("ProfileCardLists")
+      .upsert({
+        user_id: user!.id,
+        saved_profile_id: saved_user_id,
+        saved_at: new Date().toISOString(),
+      });
+
+    if (upsert_error) throw upsert_error;
+  };
+
   const customTracker = (
     detectedCodes: IDetectedBarcode[],
     ctx: CanvasRenderingContext2D
@@ -122,7 +156,12 @@ const QRReader = () => {
           />
         </div>
       ) : (
-        <ProfileCardViewer profileData={scannedProfileCard} />
+        <div>
+          <ProfileCardViewer profileData={scannedProfileCard} />
+          <div className="flex justify-center mt-4">
+            <Button onClick={handleSavaProfileCard}>追加する</Button>
+          </div>
+        </div>
       )}
     </div>
   );
