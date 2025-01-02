@@ -11,6 +11,7 @@ const QRReader = () => {
   const lastScannedRef = useRef("");
   const [scannedProfileCard, setScannedProfileCard] =
     useState<ScannedProfileCard | null>(null);
+  const [statusMessage, setStatusMessage] = useState("");
   const { user } = useAuth();
 
   const handleScan = async (results: IDetectedBarcode[]) => {
@@ -77,33 +78,45 @@ const QRReader = () => {
   };
 
   const handleSavaProfileCard = async () => {
-    const saved_user_id = scannedProfileCard!.user_id;
-    const { error: select_error, data } = await supabase
-      .from("ProfileCardLists")
-      .select("saved_profile_id")
-      .eq("user_id", user!.id)
-      .eq("saved_profile_id", saved_user_id)
-      .maybeSingle();
+    try {
+      setStatusMessage("追加しています...");
 
-    if (select_error) {
-      console.error("チェックエラー:", select_error);
-      return;
+      const saved_user_id = scannedProfileCard!.user_id;
+      const { error: select_error, data } = await supabase
+        .from("ProfileCardLists")
+        .select("saved_profile_id")
+        .eq("user_id", user!.id)
+        .eq("saved_profile_id", saved_user_id)
+        .maybeSingle();
+
+      if (select_error) {
+        console.error("チェックエラー:", select_error);
+        return;
+      }
+
+      if (data?.saved_profile_id) {
+        setStatusMessage("既に追加済みのユーザーです。");
+        return;
+      }
+
+      const { error: upsert_error } = await supabase
+        .from("ProfileCardLists")
+        .upsert({
+          user_id: user!.id,
+          saved_profile_id: saved_user_id,
+          saved_at: new Date().toISOString(),
+        });
+
+      if (upsert_error) throw upsert_error;
+
+      setStatusMessage("追加が完了しました");
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setTimeout(() => {
+        setStatusMessage("");
+      }, 5000);
     }
-
-    if (data?.saved_profile_id) {
-      console.log("既に保存済みのユーザーです。");
-      return;
-    }
-
-    const { error: upsert_error } = await supabase
-      .from("ProfileCardLists")
-      .upsert({
-        user_id: user!.id,
-        saved_profile_id: saved_user_id,
-        saved_at: new Date().toISOString(),
-      });
-
-    if (upsert_error) throw upsert_error;
   };
 
   const customTracker = (
@@ -158,8 +171,9 @@ const QRReader = () => {
       ) : (
         <div>
           <ProfileCardViewer profileData={scannedProfileCard} />
-          <div className="flex justify-center mt-4">
+          <div className="flex flex-col items-center mt-4 gap-4">
             <Button onClick={handleSavaProfileCard}>追加する</Button>
+            <p>{statusMessage}</p>
           </div>
         </div>
       )}
