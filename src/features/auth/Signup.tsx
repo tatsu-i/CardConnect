@@ -21,18 +21,31 @@ const Signup = () => {
     try {
       setLoading(true);
       const { email, password } = data;
-      const { data: authData, error } = await supabase.auth.signUp({
-        email,
-        password,
-      });
+      const { data: authData, error: signUpError } = await supabase.auth.signUp(
+        {
+          email,
+          password,
+        }
+      );
 
-      //   console.log(authData);
-
-      if (error) {
-        setErrorMessage(error.message);
+      if (signUpError) {
+        setErrorMessage(signUpError.message);
+        return;
       }
 
-      if (authData.session) {
+      if (authData.user) {
+        // profilesテーブルにレコードを作成
+        const { error: profileError } = await supabase.from("profiles").insert({
+          id: authData.user.id,
+          updated_at: new Date().toISOString(),
+        });
+
+        if (profileError) {
+          console.error("プロフィール作成エラー:", profileError);
+          setErrorMessage("プロフィールの作成に失敗しました");
+          return;
+        }
+
         navigate("/profilecard");
       }
     } catch (err) {

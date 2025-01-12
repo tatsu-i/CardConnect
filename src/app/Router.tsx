@@ -8,6 +8,7 @@ import useAuth from "@/hooks/useAuth";
 import DashBoard from "./DashBoard";
 import EditProfileCard from "@/features/profileCard/EditProfileCard";
 import QRReader from "@/features/profileCard/QRReader";
+import SavedListPage from "@/features/profileCard/savedProfiles/SavedListPage";
 
 const Router = () => {
   const { user } = useAuth();
@@ -23,6 +24,7 @@ const Router = () => {
             <Route path="/editprofilecard" element={<EditProfileCard />} />
             <Route path="/editaccount" element={<EditAccount />} />
             <Route path="/qrreader" element={<QRReader />} />
+            <Route path="/savedprofiles" element={<SavedListPage />} />
             <Route path="/" element={<Navigate to="/profilecard" replace />} />
           </Route>
         ) : (

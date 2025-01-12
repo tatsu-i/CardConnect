@@ -12,7 +12,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Home, Inbox, ScanQrCode } from "lucide-react";
+import { Home, Inbox, Save, ScanQrCode } from "lucide-react";
 import HeaderContent from "./HeaderContent";
 import NavUser from "./NavUser";
 import { Link } from "react-router-dom";
@@ -29,9 +29,14 @@ const items = [
     icon: Inbox,
   },
   {
-    title: "プロフィールカードを交換する",
+    title: "プロフィールカードを追加",
     url: "/qrreader",
     icon: ScanQrCode,
+  },
+  {
+    title: "追加したプロフィールカード",
+    url: "/savedprofiles",
+    icon: Save,
   },
 ];
 

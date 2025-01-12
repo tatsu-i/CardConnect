@@ -14,6 +14,7 @@ import { fetchProfileCard } from "./profileCardSlice";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
 import { QRCodeSVG } from "qrcode.react";
 import { supabase } from "@/utils/supabase";
+import { Link } from "react-router-dom";
 
 const ProfileCard = () => {
   const profileCard = useSelector((state: RootState) => state.profileCard);
@@ -74,6 +75,20 @@ const ProfileCard = () => {
 
   if (profileCard.loading || !user) {
     return <LoadingSkeleton />;
+  }
+
+  if (profileCard.error) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-4 p-8">
+        <p className="text-red-500">{profileCard.error}</p>
+        <Link
+          to="/editprofilecard"
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+        >
+          プロフィールカードを作成する
+        </Link>
+      </div>
+    );
   }
 
   const handleProfileClick = () => {

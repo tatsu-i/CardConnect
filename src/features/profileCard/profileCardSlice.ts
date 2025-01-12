@@ -27,7 +27,17 @@ export const fetchProfileCard = createAsyncThunk(
       .eq("user_id", userId)
       .single();
 
-    if (error) throw error;
+    if (error) {
+      if (error.code === "PGRST116") {
+        // データが見つからない場合のエラー
+        throw new Error("プロフィールカードが作成されていません。");
+      }
+      throw error;
+    }
+
+    if (!data) {
+      throw new Error("プロフィールカードが見つかりません。");
+    }
 
     if (data.image_url) {
       const { data: imageData, error: imageError } = await supabase.storage
@@ -53,7 +63,11 @@ export const fetchProfileCard = createAsyncThunk(
 const profileCardSlice = createSlice({
   name: "profileCard",
   initialState,
-  reducers: {},
+  reducers: {
+    clearProfileCard: (state) => {
+      return initialState;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchProfileCard.pending, (state) => {
@@ -62,15 +76,16 @@ const profileCardSlice = createSlice({
       })
       .addCase(fetchProfileCard.fulfilled, (state, action) => {
         state.loading = false;
-        state.name = action.payload.name || "Your Name";
-        state.birth_date = action.payload.birth_date || "Your Birth Date";
-        state.prefecture = action.payload.prefecture || "Your Living";
-        state.job = action.payload.job || "Your Job";
-        state.description = action.payload.description || "Your Description";
-        state.hobby = action.payload.hobby || "Your hobby";
-        state.skill = action.payload.skill || "Your Skill";
-        state.instagram = action.payload.instagram || "Your Instagram";
+        state.name = action.payload.name || "";
+        state.birth_date = action.payload.birth_date || "";
+        state.prefecture = action.payload.prefecture || "";
+        state.job = action.payload.job || "";
+        state.description = action.payload.description || "";
+        state.hobby = action.payload.hobby || "";
+        state.skill = action.payload.skill || "";
+        state.instagram = action.payload.instagram || "";
         state.image_url = action.payload.image_url;
+        state.error = null;
       })
       .addCase(fetchProfileCard.rejected, (state, action) => {
         state.loading = false;
@@ -79,4 +94,5 @@ const profileCardSlice = createSlice({
   },
 });
 
+export const { clearProfileCard } = profileCardSlice.actions;
 export default profileCardSlice.reducer;
