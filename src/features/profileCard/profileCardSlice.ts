@@ -64,7 +64,7 @@ const profileCardSlice = createSlice({
   name: "profileCard",
   initialState,
   reducers: {
-    clearProfileCard: (state) => {
+    clearProfileCard: () => {
       return initialState;
     },
   },

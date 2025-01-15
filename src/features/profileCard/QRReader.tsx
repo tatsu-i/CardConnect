@@ -158,13 +158,12 @@ const QRReader = () => {
           <Scanner
             onScan={handleScan}
             formats={["qr_code"]}
-            allowMultiple={false} // これを指定すると連続でスキャンできる
-            // スキャン時の UI をカスタマイズ
+            allowMultiple={false}
             components={{
-              tracker: customTracker, // コード検出時の視覚的なフィードバックをカスタマイズ
-              audio: false, // スキャン時に音を鳴らす (default: true)
-              onOff: true, // スキャンのオンオフを切り替えるボタンを表示する (default: false)
-              finder: false, // ファインダーを表示する (default: true)
+              tracker: customTracker,
+              audio: false,
+              onOff: true,
+              finder: false,
             }}
           />
         </div>

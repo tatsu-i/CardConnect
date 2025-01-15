@@ -22,6 +22,7 @@ import { ChevronsUpDown, LogOut, User } from "lucide-react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { clearProfileCard } from "@/features/profileCard/profileCardSlice";
 
 const NavUser = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -33,6 +34,7 @@ const NavUser = () => {
 
   const handleLogOut = async () => {
     const { error } = await supabase.auth.signOut();
+    dispatch(clearProfileCard());
 
     if (error) {
       throw error;
