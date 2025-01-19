@@ -31,6 +31,7 @@ const EditProfileCard = () => {
   const [date, setDate] = useState<Date>();
   const [prefecture, setPrefecture] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [statusMessage, setStatusMessage] = useState("");
   const { user } = useAuth();
 
   const handlePrefectureChange = (value: string) => {
@@ -42,69 +43,79 @@ const EditProfileCard = () => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
-    //イメージのupdate
-    let fileName = "";
-    const image = formData.get("image") as File;
-    if (image && image.size > 0) {
-      const options = {
-        maxSizeMB: 1,
-        maxWidthOrHeight: 800,
-        useWebWorker: true,
+    try {
+      //イメージのupdate
+      let fileName = "";
+      const image = formData.get("image") as File;
+      if (image && image.size > 0) {
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 800,
+          useWebWorker: true,
+        };
+        const compressedFile = await imageCompression(image, options);
+        const fileExt = compressedFile.name.split(".").pop();
+        fileName = `${user!.id}.${fileExt}`;
+        const filePath = `private/${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from("profilecard_imgs")
+          .upload(filePath, compressedFile, {
+            upsert: true,
+          });
+        if (uploadError) {
+          setErrorMessage(`アップロードに失敗しました：${uploadError.message}`);
+        }
+      }
+
+      //イメージ以外のupdate;
+      const updates: ProfileCardUpdate = {
+        user_id: user!.id,
+        birth_date: date?.toISOString(),
+        prefecture,
+        updated_at: new Date().toISOString(),
       };
-      const compressedFile = await imageCompression(image, options);
-      const fileExt = compressedFile.name.split(".").pop();
-      fileName = `${user!.id}.${fileExt}`;
-      const filePath = `private/${fileName}`;
 
-      const { error: uploadError } = await supabase.storage
-        .from("profilecard_imgs")
-        .upload(filePath, compressedFile, {
-          upsert: true,
-        });
-      if (uploadError) {
-        setErrorMessage(`アップロードに失敗しました：${uploadError.message}`);
+      if (fileName) {
+        updates.image_url = fileName;
       }
-    }
 
-    //イメージ以外のupdate;
-    const updates: ProfileCardUpdate = {
-      user_id: user!.id,
-      birth_date: date?.toISOString(),
-      prefecture,
-      updated_at: new Date().toISOString(),
-    };
+      const name = formData.get("name");
+      if (name) updates.name = name.toString();
 
-    if (fileName) {
-      updates.image_url = fileName;
-    }
+      const job = formData.get("job");
+      if (job) updates.job = job.toString();
 
-    const name = formData.get("name");
-    if (name) updates.name = name.toString();
+      const description = formData.get("description");
+      if (description) updates.description = description.toString();
 
-    const job = formData.get("job");
-    if (job) updates.job = job.toString();
+      const hobby = formData.get("hobby");
+      if (hobby) updates.hobby = hobby.toString();
 
-    const description = formData.get("description");
-    if (description) updates.description = description.toString();
+      const skill = formData.get("skill");
+      if (skill) updates.skill = skill.toString();
 
-    const hobby = formData.get("hobby");
-    if (hobby) updates.hobby = hobby.toString();
+      const instagram = formData.get("instagram");
+      if (instagram) updates.instagram = instagram.toString();
 
-    const skill = formData.get("skill");
-    if (skill) updates.skill = skill.toString();
-
-    const instagram = formData.get("instagram");
-    if (instagram) updates.instagram = instagram.toString();
-
-    if (Object.keys(updates).length > 1) {
-      const { error } = await supabase.from("ProfileCard").upsert(updates);
-      if (error) {
-        setErrorMessage(error.message);
+      if (Object.keys(updates).length > 1) {
+        const { error } = await supabase.from("ProfileCard").upsert(updates);
+        if (error) {
+          setErrorMessage(error.message);
+        }
+      } else {
+        setErrorMessage("更新する値がありません");
       }
-    } else {
-      setErrorMessage("更新する値がありません");
+
+      setStatusMessage("更新が完了しました");
+    } catch (err) {
+      if (err instanceof Error) setErrorMessage(err.message);
+    } finally {
+      setLoading(false);
+      setTimeout(() => {
+        setStatusMessage("");
+      }, 3000);
     }
-    setLoading(false);
   };
 
   return (
@@ -223,8 +234,9 @@ const EditProfileCard = () => {
           <div className="flex justify-center items-center my-4">
             <p className="text-red-600">{errorMessage}</p>
           </div>
-          <div className="flex justify-center items-center">
+          <div className="flex flex-col justify-center items-center gap-4">
             <Button type="submit">{loading ? "更新中..." : "更新"}</Button>
+            <p>{statusMessage}</p>
           </div>
         </form>
       </div>
