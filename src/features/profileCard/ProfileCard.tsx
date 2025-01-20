@@ -61,7 +61,7 @@ const ProfileCard = () => {
           console.log(`生成されたトークン：${token}`);
         } catch (err) {
           if (!isMounted) return;
-          console.error("トークン生成エラー:", err);
+          if (err instanceof Error) window.alert(err.message);
         }
       };
 

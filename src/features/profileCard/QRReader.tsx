@@ -36,7 +36,7 @@ const QRReader = () => {
       }
 
       if (!token_data) {
-        window.alert("トークンが見つからないか、期限切れです");
+        console.log("トークンが見つからないか、期限切れです");
         return;
       }
 
@@ -69,6 +69,7 @@ const QRReader = () => {
       }
     } catch (err) {
       console.error("スキャンエラー:", err);
+      if (err instanceof Error) window.alert(err.message);
     } finally {
       setTimeout(() => {
         setIsScanning(true);
@@ -111,7 +112,7 @@ const QRReader = () => {
 
       setStatusMessage("追加が完了しました");
     } catch (err) {
-      console.error(err);
+      if (err instanceof Error) window.alert(err.message);
     } finally {
       setTimeout(() => {
         setStatusMessage("");
