@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { IDetectedBarcode, Scanner } from "@yudiel/react-qr-scanner";
 import { supabase } from "@/utils/supabase";
 import { ScannedProfileCard } from "@/utils/types";

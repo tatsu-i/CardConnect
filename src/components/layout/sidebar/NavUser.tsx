@@ -19,7 +19,7 @@ import useAuth from "@/hooks/useAuth";
 import { RootState, AppDispatch } from "@/store/store";
 import { supabase } from "@/utils/supabase";
 import { ChevronsUpDown, LogOut, User } from "lucide-react";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { clearProfileCard } from "@/features/profileCard/profileCardSlice";

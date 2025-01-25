@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import imageCompression from "browser-image-compression";
 import { UserAccount, UserInfo } from "@/utils/types";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { supabase } from "@/utils/supabase";
 import useAuth from "@/hooks/useAuth";

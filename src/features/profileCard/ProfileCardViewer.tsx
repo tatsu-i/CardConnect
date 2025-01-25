@@ -7,7 +7,6 @@ import {
   MapPinHouse,
   MessageSquareHeart,
 } from "lucide-react";
-import React from "react";
 
 interface ProfileCardViewerProps {
   profileData: ScannedProfileCard;

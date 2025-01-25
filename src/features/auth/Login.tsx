@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { type SignupLoginFormInput } from "../../utils/types";
 import { supabase } from "../../utils/supabase";
