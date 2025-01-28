@@ -34,7 +34,6 @@ const Signup = () => {
       }
 
       if (authData.user) {
-        // profilesテーブルにレコードを作成
         const { error: profileError } = await supabase.from("profiles").insert({
           id: authData.user.id,
           updated_at: new Date().toISOString(),

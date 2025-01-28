@@ -1,13 +1,5 @@
 import useAuth from "@/hooks/useAuth";
 import { AppDispatch, RootState } from "@/store/store";
-import {
-  Briefcase,
-  Calendar,
-  Instagram,
-  Laptop,
-  MapPinHouse,
-  MessageSquareHeart,
-} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProfileCard } from "./profileCardSlice";
@@ -15,6 +7,8 @@ import LoadingSkeleton from "@/components/common/LoadingSkeleton";
 import { QRCodeSVG } from "qrcode.react";
 import { supabase } from "@/utils/supabase";
 import { Link } from "react-router-dom";
+import { ScannedProfileCard } from "@/utils/types";
+import ProfileCardViewer from "./ProfileCardViewer";
 
 const ProfileCard = () => {
   const profileCard = useSelector((state: RootState) => state.profileCard);
@@ -24,8 +18,6 @@ const ProfileCard = () => {
   const [token, setToken] = useState("");
 
   useEffect(() => {
-    let isMounted = true;
-
     if (user) {
       dispatch(fetchProfileCard(user.id));
 
@@ -38,11 +30,9 @@ const ProfileCard = () => {
             .gt("expires_at", new Date().toISOString())
             .maybeSingle();
 
-          if (!isMounted) return;
-
           if (existing_token) {
             setToken(existing_token.token);
-            console.log(`既存のトークンを使用：${existing_token.token}`);
+            // console.log(`既存のトークンを使用：${existing_token.token}`);
             return;
           }
 
@@ -54,22 +44,15 @@ const ProfileCard = () => {
             expires_at: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
           });
 
-          if (!isMounted) return;
-
           if (error) throw error;
           setToken(token);
-          console.log(`生成されたトークン：${token}`);
+          // console.log(`生成されたトークン：${token}`);
         } catch (err) {
-          if (!isMounted) return;
           if (err instanceof Error) window.alert(err.message);
         }
       };
 
       generateToken();
-
-      return () => {
-        isMounted = false;
-      };
     }
   }, [user, dispatch]);
 
@@ -95,6 +78,19 @@ const ProfileCard = () => {
     setFlipped(!flipped);
   };
 
+  const profileDataForViewer: ScannedProfileCard = {
+    user_id: user!.id,
+    name: profileCard.name || null,
+    birth_date: profileCard.birth_date || null,
+    prefecture: profileCard.prefecture || null,
+    job: profileCard.job || null,
+    description: profileCard.description || null,
+    hobby: profileCard.hobby || null,
+    skill: profileCard.skill || null,
+    instagram: profileCard.instagram || null,
+    image_url: profileCard.image_url || null,
+  };
+
   return (
     <div className="flex flex-col justify-center gap-4">
       <div
@@ -107,60 +103,7 @@ const ProfileCard = () => {
             flipped ? "rotate-y-180" : ""
           }`}
         >
-          <img
-            className="object-cover object-center w-full h-56"
-            src={profileCard.image_url}
-            alt="avatar"
-          />
-
-          <div className="flex items-center px-6 py-3 bg-gray-900">
-            <Calendar color="white" />
-            <h1 className="mx-3 text-base font-medium text-white">
-              {profileCard.birth_date}
-            </h1>
-          </div>
-
-          <div className="flex flex-col px-6 py-4 gap-4">
-            <h1 className="text-xl font-semibold text-gray-800 dark:text-white">
-              {profileCard.name}
-            </h1>
-
-            {/* 職業・所在地 */}
-            <div className="flex justify-center gap-5">
-              <div className="flex items-center text-gray-700 dark:text-gray-200">
-                <MapPinHouse />
-                <h1 className="px-2 text-sm">{profileCard.prefecture}</h1>
-              </div>
-              <div className="flex items-center text-gray-700 dark:text-gray-200">
-                <Briefcase />
-                <h1 className="px-2 text-sm">{profileCard.job}</h1>
-              </div>
-            </div>
-
-            {/* Description */}
-            <div>
-              <p className="text-gray-700 dark:text-gray-400">
-                {profileCard.description}
-              </p>
-            </div>
-
-            {/* 趣味・スキル */}
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center text-gray-700 dark:text-gray-200">
-                <MessageSquareHeart />
-                <h1 className="px-2 text-sm">{profileCard.hobby}</h1>
-              </div>
-              <div className="flex items-center text-gray-700 dark:text-gray-200">
-                <Laptop />
-                <h1 className="px-2 text-sm">{profileCard.skill}</h1>
-              </div>
-            </div>
-
-            <div className="flex items-center text-gray-700 dark:text-gray-200">
-              <Instagram />
-              <h1 className="px-2 text-sm">{profileCard.instagram}</h1>
-            </div>
-          </div>
+          <ProfileCardViewer profileData={profileDataForViewer} />
         </div>
 
         {/* 裏面 */}
