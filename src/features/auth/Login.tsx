@@ -80,6 +80,7 @@ const Login = () => {
                         message: "入力が必須の項目です。",
                       },
                     })}
+                    id="email"
                     type="email"
                     className="py-3 px-4 w-full border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
                   />
@@ -102,6 +103,7 @@ const Login = () => {
                         message: "8文字以上入力してください。",
                       },
                     })}
+                    id="password"
                     type="password"
                     className="py-3 px-4 w-full border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
                   />
