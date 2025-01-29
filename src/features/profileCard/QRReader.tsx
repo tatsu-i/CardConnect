@@ -12,6 +12,7 @@ const QRReader = () => {
   const [scannedProfileCard, setScannedProfileCard] =
     useState<ScannedProfileCard | null>(null);
   const [statusMessage, setStatusMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const { user } = useAuth();
 
   const handleScan = async (results: IDetectedBarcode[]) => {
@@ -32,11 +33,14 @@ const QRReader = () => {
         .single();
 
       if (error) {
-        console.log(`ユーザーIDの取得に失敗しました:${error}`);
+        // console.log(`ユーザーIDの取得に失敗しました:${error}`);
+        setErrorMessage("ユーザーIDの取得に失敗しました。");
+        return;
       }
 
       if (!token_data) {
-        console.log("トークンが見つからないか、期限切れです");
+        // console.log("トークンが見つからないか、期限切れです");
+        setErrorMessage("トークンが見つからないか期限切れです。");
         return;
       }
 
@@ -64,11 +68,11 @@ const QRReader = () => {
             image_url: url,
           };
           setScannedProfileCard(scannedProfileCardData);
-          console.log(profileCard_data);
+          // console.log(profileCard_data);
         }
       }
     } catch (err) {
-      console.error("スキャンエラー:", err);
+      // console.error("スキャンエラー:", err);
       if (err instanceof Error) window.alert(err.message);
     } finally {
       setTimeout(() => {
@@ -155,7 +159,7 @@ const QRReader = () => {
   return (
     <div className="flex justify-center">
       {!scannedProfileCard ? (
-        <div className="w-[300px]">
+        <div className="w-[300px] gap-4">
           <Scanner
             onScan={handleScan}
             formats={["qr_code"]}
@@ -167,13 +171,14 @@ const QRReader = () => {
               finder: false,
             }}
           />
+          <p>{errorMessage}</p>
         </div>
       ) : (
         <div>
           <ProfileCardViewer profileData={scannedProfileCard} />
           <div className="flex flex-col items-center mt-4 gap-4">
             <Button onClick={handleSavaProfileCard}>追加する</Button>
-            <p>{statusMessage}</p>
+            <p className="text-red-600">{statusMessage}</p>
           </div>
         </div>
       )}
