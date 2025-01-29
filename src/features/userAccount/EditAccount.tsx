@@ -59,7 +59,7 @@ const EditAccount = () => {
 
     //アップデート
     const updates: UserInfo = {
-      id: user!.id,
+      user_id: user!.id,
       updated_at: new Date().toISOString(),
     };
 
@@ -72,7 +72,7 @@ const EditAccount = () => {
     }
 
     if (inputUsername || fileName) {
-      const { error } = await supabase.from("profiles").upsert(updates);
+      const { error } = await supabase.from("Profile").upsert(updates);
       if (error) {
         setErrorMessage(`データの更新に失敗しました：${error.message}`);
       } else {
