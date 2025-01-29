@@ -34,8 +34,8 @@ const Signup = () => {
       }
 
       if (authData.user) {
-        const { error: profileError } = await supabase.from("profiles").insert({
-          id: authData.user.id,
+        const { error: profileError } = await supabase.from("Profile").insert({
+          user_id: authData.user.id,
           updated_at: new Date().toISOString(),
         });
 
