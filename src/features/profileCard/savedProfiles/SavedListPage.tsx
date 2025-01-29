@@ -17,7 +17,7 @@ const SavedListPage = () => {
 
       try {
         const { data: savedList, error: listError } = await supabase
-          .from("ProfileCardLists")
+          .from("ProfileCardList")
           .select("saved_profile_id")
           .eq("user_id", user.id);
 

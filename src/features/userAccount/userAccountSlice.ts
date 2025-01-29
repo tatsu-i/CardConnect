@@ -14,9 +14,9 @@ export const fetchUserAccount = createAsyncThunk(
   "userAccount/fetchUserAccount",
   async (userId: string) => {
     const { data, error } = await supabase
-      .from("profiles")
+      .from("Profile")
       .select(`username, avatar_url`)
-      .eq("id", userId)
+      .eq("user_id", userId)
       .single();
 
     if (error) throw error;

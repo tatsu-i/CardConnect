@@ -24,7 +24,7 @@ const ProfileCard = () => {
       const generateToken = async () => {
         try {
           const { data: existing_token } = await supabase
-            .from("qr_tokens")
+            .from("QR_token")
             .select("token")
             .eq("user_id", user.id)
             .gt("expires_at", new Date().toISOString())
@@ -37,7 +37,7 @@ const ProfileCard = () => {
           }
 
           const token = crypto.randomUUID();
-          const { error } = await supabase.from("qr_tokens").insert({
+          const { error } = await supabase.from("QR_token").insert({
             token,
             user_id: user.id,
             created_at: new Date().toISOString(),

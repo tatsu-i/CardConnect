@@ -27,7 +27,7 @@ const QRReader = () => {
 
     try {
       const { data: token_data, error } = await supabase
-        .from("qr_tokens")
+        .from("QR_token")
         .select("user_id")
         .eq("token", scanResult)
         .single();
@@ -88,7 +88,7 @@ const QRReader = () => {
 
       const saved_user_id = scannedProfileCard!.user_id;
       const { error: select_error, data } = await supabase
-        .from("ProfileCardLists")
+        .from("ProfileCardList")
         .select("saved_profile_id")
         .eq("user_id", user!.id)
         .eq("saved_profile_id", saved_user_id)
@@ -105,7 +105,7 @@ const QRReader = () => {
       }
 
       const { error: upsert_error } = await supabase
-        .from("ProfileCardLists")
+        .from("ProfileCardList")
         .upsert({
           user_id: user!.id,
           saved_profile_id: saved_user_id,
