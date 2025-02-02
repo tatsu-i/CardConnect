@@ -1,8 +1,6 @@
 # CardConnect - プロフィールカード交換アプリ
 
-<br/>
 https://card-connect-app.vercel.app
-<br/>
 
 ## :iphone:サービス概要
 
