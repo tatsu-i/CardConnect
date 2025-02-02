@@ -1,6 +1,8 @@
 # CardConnect - プロフィールカード交換アプリ
 
+<br/>
 https://card-connect-app.vercel.app
+<br/>
 
 ## :iphone:サービス概要
 
@@ -44,10 +46,11 @@ https://card-connect-app.vercel.app
 ## :globe_with_meridians:デプロイ
 
 - Vercel を使用した自動デプロイ
+- 環境変数の適切な管理
 - 将来的な Next.js 対応による相性の良さ
 
 ## :memo:今後の展望
 
 - 入力した趣味等をもとに、AI がプロフィール文章を作成してくれる機能
 - プロフィールカードのテンプレート機能
-- Next.js 実装による、読み込み速度向上
+- Next.js 対応による、読み込み速度向上
