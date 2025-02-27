@@ -20,10 +20,9 @@ https://card-connect-app.vercel.app
 
 - 必要な情報に絞ったプロフィール共有
 - QR コードによる手軽な情報交換
-- プライバシーに配慮した段階的な情報開示
 
 を実現しました。\
-「まずはお互いのことを知るところから始めたい」「気軽に連絡先を交換したい」という大学生の声に応える、新しいコミュニケーションツールを目指しています。
+「まずはお互いのことを知るところから始めたい」「気軽に連絡先を交換したい」という大学生の声に応える、新しいコミュニケーションツールにしていきたいです。
 
 ## :calling:機能一覧
 
@@ -60,7 +59,7 @@ https://card-connect-app.vercel.app
 | Category       | Technology Stack                     |
 | -------------- | ------------------------------------ |
 | Frontend       | TypeScript, React, Redux Toolkit     |
-| BackEnd        | Supabase（認証）                     |
+| Backend        | Supabase（認証）                     |
 | Infrastructure | Vercel                               |
 | Database       | Supabase（データベース、ストレージ） |
 | Design         | TailwindCSS, shadcn/ui               |
@@ -80,5 +79,4 @@ https://card-connect-app.vercel.app
 ## :memo:今後の展望
 
 - 入力した趣味等をもとに、AI がプロフィール文章を作成してくれる機能
-- プロフィールカードのテンプレート機能
 - Next.js 対応による、読み込み速度向上
